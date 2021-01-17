@@ -5,6 +5,9 @@ from pymongo import MongoClient
 load_dotenv()
 client = MongoClient(os.getenv('MONGO_CONN'))
 
+db = client['spotify']
+artists_collection = db['Artists']
+
 print(os.getenv('MONGO_CONN'))
 # print('\n\n')
 # print(client)
@@ -12,13 +15,16 @@ print(os.getenv('MONGO_CONN'))
 def insert_artist(artist_name):
 
     #myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-    db = client['spotify']
-    artists_collection = db['Artists']
+    to_insert = {'name': artist_name}
 
-    to_insert = [{'name': artist_name},{'name': 'Sticky Fingers'},{'name': 'Sons of the East'},{'name': 'Eminem'}]
+    artist = artists_collection.insert(to_insert)
+    print(artist)
 
-    abelha = artists_collection.insert(to_insert)
-    print(abelha)
+def get_all_artists():
 
-insert_artist('Caetano Veloso')
+    cursor = db['artists_collection'].find({})
+    for item in cursor:
+        print(item)
+
+get_all_artists()
 
